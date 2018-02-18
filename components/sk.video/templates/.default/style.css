@@ -1,0 +1,29 @@
+.dv_video {
+  width: 100%;
+}
+
+.play_btn, .pause_btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  margin: -50px 0 0 -50px;
+  color: #fff;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity 0.2s ease-out;
+}
+
+.pause_btn {
+  opacity: 0;
+}
+
+.play_btn:hover, .pause_btn:hover {
+  opacity: 0.8;
+}
+.ctrl_hidden {
+  display: none;
+}
+
+

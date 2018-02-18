@@ -1,0 +1,44 @@
+div.sk-feedback {}
+div.sk-name, div.sk-email, div.sk-phone, div.sk-time, div.sk-file, div.sk-field1, div.sk-field2, div.sk-field3, div.sk-captcha, div.sk-message {width:80%; padding-bottom:0.4em;}
+div.sk-name input, div.sk-email input, div.sk-phone input, div.sk-time input, div.sk-file input, div.sk-field1 input, div.sk-field2 input, div.sk-field3 input {width:60%;}
+div.sk-message textarea {width: 60%;}
+span.sk-req {color:red;}
+div.sk-ok-text {color:green; font-weight:bold; padding-bottom: 1em;}
+.sk_overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.7);
+	z-index: 1000;
+	align-items:center;
+	justify-content: center;
+	opacity:0;
+	display:none;
+}
+
+.sk_overlay .sk_popup {
+	position: relative;
+	padding: 30px;
+	background: #fff;
+	color:#444;
+	flex: 0 0 auto;
+}
+
+.sk_overlay .sk_popup__close{
+	position: absolute;
+	top: 0;
+	right: 0;
+	cursor: pointer;
+	padding: 0 7px;
+	background: #a1470d;
+	color: #fff;
+	font-size: 2em;
+  line-height: 0.8em;
+}
+
+.sk_overlay .sk_popup__title{
+	font-size: 1.3em;
+	margin-bottom: 10px;
+}

@@ -1,0 +1,29 @@
+DV_FEEDBACK
+-RU name
+ДИВИЕР: Обратная связь
+-RU desc
+#NAME# - Автор сообщения
+#PHONE# - Телефон автора сообщения
+#TIME# - Время звонка
+#EMAIL# - Email автора сообщения
+#TEXT# - Текст сообщения
+#FILE# - Прикркпленный файл
+#FIELD1# - Дополнительное поле 1
+#FIELD2# - Дополнительное поле 2
+#FIELD3# - Дополнительное поле 3
+#EMAIL_FROM# - Email отправителя письма
+#EMAIL_TO# - Email получателя письма
+-EN name
+DIVIER: Feedback
+-EN desc
+#NAME# - Message author
+#PHONE# - Author's phone number
+#TIME# - Time to call
+#EMAIL# - Author's e-mail address
+#TEXT# - Message text
+#FILE# - Attached file
+#FIELD1# - Additional field 1
+#FIELD2# - Additional field 2
+#FIELD3# - Additional field 3
+#EMAIL_FROM# - Sender's e-mail address
+#EMAIL_TO# - Recipient's e-mail address
