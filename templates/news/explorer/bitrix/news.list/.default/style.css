@@ -1,0 +1,4 @@
+.explorer {list-style-type:none;font:400 14px/24px Verdana;}
+.explorer a, .explorer a:active {text-decoration:none;color:#08a;}
+.explorer a:hover {color:#08c;}
+.explorer svg {height:24px;width:24px;vertical-align:-6px;}
