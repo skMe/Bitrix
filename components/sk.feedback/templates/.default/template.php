@@ -121,9 +121,10 @@ if(strlen($arResult["OK_MESSAGE"]) > 0)
 <?CJSCore::Init(array("jquery"))?>
 <script type="text/javascript">
 $(document).ready(function(){
+	var afjrxm__to,afjrxm__ms;
 	if( !$('.afjrxm__mess').length ) {
 		$('body').append('<div class="afjrxm__mess"><div class="afjrxm__close">&times;</div><div class="afjrxm__title"></div><div class="afjrxm__text"></div></div>');
-		$('.afjrxm__mess').css({
+		afjrxm__ms = $('.afjrxm__mess').css({
 			position: "fixed",
 			bottom: "10px",
 			right: "-310px",
@@ -146,16 +147,13 @@ $(document).ready(function(){
 			padding: "0 4px",
 			fontSize: "25px",
 			lineHeight: "20px",
-		});
+		}).click(afClose);
 		$('.afjrxm__title').css({
 			fontSize: "1.1em",
 			padding: "0 0 10px 0",
 		});
 	}
 
-	$('.afjrxm__close').click(function(){
-		$('.afjrxm__mess').animate({right: "-310px"}, 300);
-	});
 	$(".afjrxm").submit(function(e) {
 		e.preventDefault();
 		var form = $(this);
@@ -175,10 +173,17 @@ $(document).ready(function(){
 					$('.afjrxm__title').html('ОШИБКА!');
 					$('.afjrxm__text').html(response.msg.join('<br>'));
 				}
-				$('.afjrxm__mess').animate({right: "10px"}, 300);
+				clearTimeout(afjrxm__to);
+				afjrxm__ms.animate({right: "10px"}, 300);
+				afjrxm__to = setTimeout(afClose, 8000)
 			}
 		});
 	});
+	
+	function afClose(){
+		clearTimeout(afjrxm__to);
+		afjrxm__ms.animate({right: "-310px"}, 300);
+	}
 });
 </script>
 <?endif?>
