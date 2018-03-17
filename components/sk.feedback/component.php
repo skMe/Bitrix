@@ -33,7 +33,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 			$arResult["ERROR_MESSAGE"][] = GetMessage("SK_REQ_PHONE");
 		if((empty($arParams["REQUIRED_FIELDS"]) || in_array("TIME", $arParams["REQUIRED_FIELDS"])) && strlen($_POST["time"]) <= 1)
 			$arResult["ERROR_MESSAGE"][] = GetMessage("SK_REQ_TIME");
-		if((empty($arParams["REQUIRED_FIELDS"]) || in_array("FILE", $arParams["REQUIRED_FIELDS"])) && strlen($_POST["file"]) <= 1)
+		if((empty($arParams["REQUIRED_FIELDS"]) || in_array("FILE", $arParams["REQUIRED_FIELDS"])) && empty($_FILES["file"]["tmp_name"]))
 			$arResult["ERROR_MESSAGE"][] = GetMessage("SK_REQ_FILE");
 		if((empty($arParams["REQUIRED_FIELDS"]) || in_array("FIELD1", $arParams["REQUIRED_FIELDS"])) && strlen($_POST["field1"]) <= 1)
 			$arResult["ERROR_MESSAGE"][] = GetMessage("SK_REQ_FIELD1");
@@ -55,19 +55,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 			}
 		}
 		if(empty($arResult["ERROR_MESSAGE"])) {
+			$files = $fnames = array();
+			
+			foreach ($_FILES as $file) {
+				if (!empty($file['tmp_name'])) {
+					$files[] = CFile::SaveFile($file, 'attach');
+					$fnames[] = $file['name'];
+				}
+			}
 			$arFields = Array(
 				"NAME" => $_POST["name"],
 				"EMAIL" => $_POST["email"],
 				"PHONE" => $_POST["phone"],
 				"TIME" => $arTimes[$_POST["time"]],
-				"FILE" => $_POST["file"],
+				"FILE" => implode(", ", $fnames),
 				"FIELD1" => $_POST["field1"],
 				"FIELD2" => $_POST["field2"],
 				"FIELD3" => $_POST["field3"],
 				"MESSAGE" => $_POST["message"],
 			);
 			foreach($arParams["EVENT_MESSAGE_ID"] as $v) {
-				if(IntVal($v) > 0) CEvent::Send("SK_FORM", SITE_ID, $arFields, "N", IntVal($v));
+				if(IntVal($v) > 0) CEvent::Send("SK_FORM", SITE_ID, $arFields, "N", IntVal($v), $files);
 			}
 			if($_POST["ajax"] != "y") LocalRedirect($APPLICATION->GetCurPageParam("success=".$arResult["PARAMS_HASH"], Array("success")));
 		}

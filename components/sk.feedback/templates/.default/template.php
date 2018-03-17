@@ -22,7 +22,7 @@ if(strlen($arResult["OK_MESSAGE"]) > 0)
 }
 ?>
 
-<form action="<?=POST_FORM_ACTION_URI?>" method="post" class="afjrxm">
+<form class="afjrxm" action="<?=POST_FORM_ACTION_URI?>" method="POST"<?if(in_array("FILE", $arParams["USE_FIELDS"])):?> enctype="multipart/form-data"<?endif?>>
 <?=bitrix_sessid_post()?>
 <?if(in_array("NAME", $arParams["USE_FIELDS"])):?>
 	<div class="sk-name">
@@ -100,15 +100,15 @@ if(strlen($arResult["OK_MESSAGE"]) > 0)
 		<input type="text" name="field3" value="<?=(empty($arResult["ERROR_MESSAGE"]) ? '' : $_POST["field3"])?>">
 	</div>
 <?endif?>
-	<?if($arParams["USE_CAPTCHA"] == "Y"):?>
+<?if($arParams["USE_CAPTCHA"] == "Y"):?>
 	<div class="sk-captcha">
 		<div class="sk-text"><?=GetMessage("SK_CAPTCHA")?></div>
-		<input type="hidden" name="captcha_sid" value="<?=$arResult["capCode"]?>">
-		<img src="/bitrix/tools/captcha.php?captcha_sid=<?=$arResult["capCode"]?>" width="180" height="40" alt="CAPTCHA">
+		<input class="captcha_sid" type="hidden" name="captcha_sid" value="<?=$arResult["capCode"]?>">
+		<img class="captcha_img" src="/bitrix/tools/captcha.php?captcha_sid=<?=$arResult["capCode"]?>" width="180" height="40" alt="CAPTCHA">
 		<div class="sk-text"><?=GetMessage("SK_CAPTCHA_CODE")?><span class="sk-req">*</span></div>
 		<input type="text" name="captcha_word" size="30" maxlength="50" value="">
 	</div>
-	<?endif;?>
+<?endif;?>
 	<input type="submit" value="<?=GetMessage("SK_SUBMIT")?>">
 <?if($arParams["AJAX"] == "Y"):?>
 	<input type="hidden" name="ph" value="<?=$arParams["PH"]?>">
@@ -157,18 +157,24 @@ $(document).ready(function(){
 	$(".afjrxm").submit(function(e) {
 		e.preventDefault();
 		var form = $(this);
-		var form_data = form.serialize();
+		var form_data = new FormData(form.get(0));
+//				console.log(form_data);
 		$.ajax({
 			type: "POST",
 			url: "<?=$arParams["AJAX_PATH"]?>",
 			data: form_data,
 			dataType: 'json',
+			contentType: false,
+			processData: false,
 			success: function(response) {
-//				console.log(response);
 				if (response.success) {
 					$('.afjrxm__title').html('УСПЕШНО!');
 					$('.afjrxm__text').html(response.msg);
 					form.trigger("reset");
+<?if($arParams["USE_CAPTCHA"] == "Y"):?>
+					form.find('.captcha_sid').val(response.captcha);
+					form.find('.captcha_img').attr('src', '/bitrix/tools/captcha.php?captcha_sid=' + response.captcha);
+<?endif?>
 				} else {
 					$('.afjrxm__title').html('ОШИБКА!');
 					$('.afjrxm__text').html(response.msg.join('<br>'));
