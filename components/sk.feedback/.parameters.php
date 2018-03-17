@@ -83,6 +83,7 @@ if ($arCurrentValues['AJAX'] == "Y") {
 		"FD_EXT" => "php",
 		"FD_UPLOAD" => false,
 		"PARENT" => "BASE",
+		"DEFAULT" => "$componentPath/ajax/form.php", 
 	);
 }
 

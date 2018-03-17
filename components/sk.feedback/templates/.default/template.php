@@ -22,7 +22,7 @@ if(strlen($arResult["OK_MESSAGE"]) > 0)
 }
 ?>
 
-<form action="<?=POST_FORM_ACTION_URI?>" method="post" class="sk_form">
+<form action="<?=POST_FORM_ACTION_URI?>" method="post" class="afjrxm">
 <?=bitrix_sessid_post()?>
 <?if(in_array("NAME", $arParams["USE_FIELDS"])):?>
 	<div class="sk-name">
@@ -121,11 +121,42 @@ if(strlen($arResult["OK_MESSAGE"]) > 0)
 <?CJSCore::Init(array("jquery"))?>
 <script type="text/javascript">
 $(document).ready(function(){
-	$("body").append('<div class="sk_overlay"><div class="sk_popup"><div class="sk_popup__close">&times;</div><div class="sk_popup__title"></div><div class="sk_popup__text"></div></div></div>');
-	$('.sk_popup__close').click(function(){
-		$('.sk_overlay').fadeOut(300);
+	if( !$('.afjrxm__mess').length ) {
+		$('body').append('<div class="afjrxm__mess"><div class="afjrxm__close">&times;</div><div class="afjrxm__title"></div><div class="afjrxm__text"></div></div>');
+		$('.afjrxm__mess').css({
+			position: "fixed",
+			bottom: "10px",
+			right: "-310px",
+			padding: "10px",
+			color: "#555",
+			backgroundColor: "#f7f7f7",
+			backgroundImage: "linear-gradient(#fafafa 0px, #e6e6e6 100%)",
+			border: "1px solid #ccc",
+			borderRadius: "4px",
+			textShadow: "0 1px 0 rgba(255,255,255,.2)",
+			boxShadow: "inset 0 1px 0 rgba(255,255,255,.25),0 1px 4px rgba(0,0,0,.25)",
+			zIndex: "1000",
+			maxWidth: "280px",
+		});
+		$('.afjrxm__close').css({
+			position: "absolute",
+			top: "0",
+			right: "0",
+			cursor: "pointer",
+			padding: "0 4px",
+			fontSize: "25px",
+			lineHeight: "20px",
+		});
+		$('.afjrxm__title').css({
+			fontSize: "1.1em",
+			padding: "0 0 10px 0",
+		});
+	}
+
+	$('.afjrxm__close').click(function(){
+		$('.afjrxm__mess').animate({right: "-310px"}, 300);
 	});
-	$(".sk_form").submit(function(e) {
+	$(".afjrxm").submit(function(e) {
 		e.preventDefault();
 		var form = $(this);
 		var form_data = form.serialize();
@@ -135,16 +166,16 @@ $(document).ready(function(){
 			data: form_data,
 			dataType: 'json',
 			success: function(response) {
-				console.log(response);
+//				console.log(response);
 				if (response.success) {
-					$('.sk_popup__title').html('УСПЕШНО!');
-					$('.sk_popup__text').html(response.msg);
+					$('.afjrxm__title').html('УСПЕШНО!');
+					$('.afjrxm__text').html(response.msg);
 					form.trigger("reset");
 				} else {
-					$('.sk_popup__title').html('ОШИБКА!');
-					$('.sk_popup__text').html(response.msg.join('<br>'));
+					$('.afjrxm__title').html('ОШИБКА!');
+					$('.afjrxm__text').html(response.msg.join('<br>'));
 				}
-				$('.sk_overlay').css('display', 'flex').animate({opacity:'1'}, 300)
+				$('.afjrxm__mess').animate({right: "10px"}, 300);
 			}
 		});
 	});
