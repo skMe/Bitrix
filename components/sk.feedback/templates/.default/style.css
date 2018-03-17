@@ -1,6 +1,37 @@
-div.sk-feedback {}
-div.sk-name, div.sk-email, div.sk-phone, div.sk-time, div.sk-file, div.sk-field1, div.sk-field2, div.sk-field3, div.sk-captcha, div.sk-message {width:80%; padding-bottom:0.4em;}
-div.sk-name input, div.sk-email input, div.sk-phone input, div.sk-time input, div.sk-file input, div.sk-field1 input, div.sk-field2 input, div.sk-field3 input {width:60%;}
-div.sk-message textarea {width: 60%;}
-span.sk-req {color:red;}
-div.sk-ok-text {color:green; font-weight:bold; padding-bottom: 1em;}
+.afjrxm__req {
+	color:red;
+}
+.afjrxm__ok-text {
+	color:green;
+	font-weight:bold;
+	padding-bottom:1em;
+}
+.afjrxm__mess {
+	position:fixed;
+	bottom:10px;
+	right:-310px;
+	padding:10px;
+	color:#555;
+	background-color:#f7f7f7;
+	background-image:linear-gradient(#fafafa 0px, #e6e6e6 100%);
+	border:1px solid #ccc;
+	border-radius:4px;
+	text-shadow:0 1px 0 rgba(255,255,255,.2);
+	box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 1px 4px rgba(0,0,0,.25);
+	z-index:1000;
+	max-width:280px;
+}
+.afjrxm__close {
+	position:absolute;
+	top:0;
+	right:0;
+	cursor:pointer;
+	padding:0 4px;
+	font-size:25px;
+	line-height:20px;
+}
+
+.afjrxm__title {
+	font-size:1.1em;
+	padding:0 0 10px 0;
+}

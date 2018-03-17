@@ -124,34 +124,8 @@ $(document).ready(function(){
 	var afjrxm__to,afjrxm__ms;
 	if( !$('.afjrxm__mess').length ) {
 		$('body').append('<div class="afjrxm__mess"><div class="afjrxm__close">&times;</div><div class="afjrxm__title"></div><div class="afjrxm__text"></div></div>');
-		afjrxm__ms = $('.afjrxm__mess').css({
-			position: "fixed",
-			bottom: "10px",
-			right: "-310px",
-			padding: "10px",
-			color: "#555",
-			backgroundColor: "#f7f7f7",
-			backgroundImage: "linear-gradient(#fafafa 0px, #e6e6e6 100%)",
-			border: "1px solid #ccc",
-			borderRadius: "4px",
-			textShadow: "0 1px 0 rgba(255,255,255,.2)",
-			boxShadow: "inset 0 1px 0 rgba(255,255,255,.25),0 1px 4px rgba(0,0,0,.25)",
-			zIndex: "1000",
-			maxWidth: "280px",
-		});
-		$('.afjrxm__close').css({
-			position: "absolute",
-			top: "0",
-			right: "0",
-			cursor: "pointer",
-			padding: "0 4px",
-			fontSize: "25px",
-			lineHeight: "20px",
-		}).click(afClose);
-		$('.afjrxm__title').css({
-			fontSize: "1.1em",
-			padding: "0 0 10px 0",
-		});
+		afjrxm__ms = $('.afjrxm__mess');
+		$('.afjrxm__close').click(afClose);
 	}
 
 	$(".afjrxm").submit(function(e) {
@@ -171,10 +145,10 @@ $(document).ready(function(){
 					$('.afjrxm__title').html('УСПЕШНО!');
 					$('.afjrxm__text').html(response.msg);
 					form.trigger("reset");
-<?if($arParams["USE_CAPTCHA"] == "Y"):?>
-					form.find('.captcha_sid').val(response.captcha);
-					form.find('.captcha_img').attr('src', '/bitrix/tools/captcha.php?captcha_sid=' + response.captcha);
-<?endif?>
+					if (response.captcha) {
+						form.find('.captcha_sid').val(response.captcha); //Change CAPTCHA sid
+						form.find('.captcha_img').attr('src', '/bitrix/tools/captcha.php?captcha_sid=' + response.captcha); //Change CAPTCHA img
+					}
 				} else {
 					$('.afjrxm__title').html('ОШИБКА!');
 					$('.afjrxm__text').html(response.msg.join('<br>'));
