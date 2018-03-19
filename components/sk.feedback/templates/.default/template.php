@@ -10,7 +10,7 @@ if(!defined("B_PROLOG_INCLUDED")||B_PROLOG_INCLUDED!==true)die();
  * @global CUser $USER
  */
 ?>
-<div class="sk-feedback">
+<div>
 <?if(!empty($arResult["ERROR_MESSAGE"]))
 {
 	foreach($arResult["ERROR_MESSAGE"] as $v)
@@ -18,40 +18,40 @@ if(!defined("B_PROLOG_INCLUDED")||B_PROLOG_INCLUDED!==true)die();
 }
 if(strlen($arResult["OK_MESSAGE"]) > 0)
 {
-	?><div class="sk-ok-text"><?=$arResult["OK_MESSAGE"]?></div><?
+	?><div class="afjrxm__ok-text"><?=$arResult["OK_MESSAGE"]?></div><?
 }
 ?>
 
 <form class="afjrxm" action="<?=POST_FORM_ACTION_URI?>" method="POST"<?if(in_array("FILE", $arParams["USE_FIELDS"])):?> enctype="multipart/form-data"<?endif?>>
 <?=bitrix_sessid_post()?>
 <?if(in_array("NAME", $arParams["USE_FIELDS"])):?>
-	<div class="sk-name">
-		<div class="sk-text">
-			<?=GetMessage("SK_NAME")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("NAME", $arParams["REQUIRED_FIELDS"])):?><span class="sk-req">*</span><?endif?>
+	<div class="row">
+		<div>
+			<?=GetMessage("SK_NAME")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("NAME", $arParams["REQUIRED_FIELDS"])):?><span> *</span><?endif?>
 		</div>
 		<input type="text" name="name" value="<?=(empty($arResult["ERROR_MESSAGE"]) ? '' : $_POST["name"])?>">
 	</div>
 <?endif?>
 <?if(in_array("EMAIL", $arParams["USE_FIELDS"])):?>
-	<div class="sk-email">
-		<div class="sk-text">
-			<?=GetMessage("SK_EMAIL")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("EMAIL", $arParams["REQUIRED_FIELDS"])):?><span class="sk-req">*</span><?endif?>
+	<div class="row">
+		<div>
+			<?=GetMessage("SK_EMAIL")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("EMAIL", $arParams["REQUIRED_FIELDS"])):?><span> *</span><?endif?>
 		</div>
 		<input type="text" name="email" value="<?=(empty($arResult["ERROR_MESSAGE"]) ? '' : $_POST["email"])?>">
 	</div>
 <?endif?>
 <?if(in_array("PHONE", $arParams["USE_FIELDS"])):?>
-	<div class="sk-phone">
-		<div class="sk-text">
-			<?=GetMessage("SK_PHONE")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("PHONE", $arParams["REQUIRED_FIELDS"])):?><span class="sk-req">*</span><?endif?>
+	<div class="row">
+		<div>
+			<?=GetMessage("SK_PHONE")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("PHONE", $arParams["REQUIRED_FIELDS"])):?><span> *</span><?endif?>
 		</div>
 		<input type="text" name="phone" value="<?=(empty($arResult["ERROR_MESSAGE"]) ? '' : $_POST["phone"])?>">
 	</div>
 <?endif?>
 <?if(in_array("TIME", $arParams["USE_FIELDS"])):?>
-	<div class="sk-time">
-		<div class="sk-text">
-			<?=GetMessage("SK_TIME")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("TIME", $arParams["REQUIRED_FIELDS"])):?><span class="sk-req">*</span><?endif?>
+	<div class="row">
+		<div>
+			<?=GetMessage("SK_TIME")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("TIME", $arParams["REQUIRED_FIELDS"])):?><span> *</span><?endif?>
 		</div>
 		<select name="time">
 			<option value="0"><?=GetMessage("SK_TIME0")?></option>
@@ -61,51 +61,51 @@ if(strlen($arResult["OK_MESSAGE"]) > 0)
 	</div>
 <?endif?>
 <?if(in_array("MESSAGE", $arParams["USE_FIELDS"])):?>
-	<div class="sk-message">
-		<div class="sk-text">
-			<?=GetMessage("SK_MESSAGE")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("MESSAGE", $arParams["REQUIRED_FIELDS"])):?><span class="sk-req">*</span><?endif?>
+	<div class="row">
+		<div>
+			<?=GetMessage("SK_MESSAGE")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("MESSAGE", $arParams["REQUIRED_FIELDS"])):?><span> *</span><?endif?>
 		</div>
 		<textarea name="message" rows="5" cols="40"><?=(empty($arResult["ERROR_MESSAGE"]) ? '' : $_POST["message"])?></textarea>
 	</div>
 <?endif?>
 <?if(in_array("FILE", $arParams["USE_FIELDS"])):?>
-	<div class="sk-file">
-		<div class="sk-text">
-			<?=GetMessage("SK_FILE")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("FILE", $arParams["REQUIRED_FIELDS"])):?><span class="sk-req">*</span><?endif?>
+	<div class="row">
+		<div>
+			<?=GetMessage("SK_FILE")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("FILE", $arParams["REQUIRED_FIELDS"])):?><span> *</span><?endif?>
 		</div>
 		<input type="file" name="file" value="">
 	</div>
 <?endif?>
 <?if(in_array("FIELD1", $arParams["USE_FIELDS"])):?>
-	<div class="sk-field1">
-		<div class="sk-text">
-			<?=GetMessage("SK_FIELD1")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("FIELD1", $arParams["REQUIRED_FIELDS"])):?><span class="sk-req">*</span><?endif?>
+	<div class="row">
+		<div>
+			<?=GetMessage("SK_FIELD1")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("FIELD1", $arParams["REQUIRED_FIELDS"])):?><span> *</span><?endif?>
 		</div>
 		<input type="text" name="field1" value="<?=(empty($arResult["ERROR_MESSAGE"]) ? '' : $_POST["field1"])?>">
 	</div>
 <?endif?>
 <?if(in_array("FIELD2", $arParams["USE_FIELDS"])):?>
-	<div class="sk-field2">
-		<div class="sk-text">
-			<?=GetMessage("SK_FIELD2")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("FIELD2", $arParams["REQUIRED_FIELDS"])):?><span class="sk-req">*</span><?endif?>
+	<div class="row">
+		<div>
+			<?=GetMessage("SK_FIELD2")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("FIELD2", $arParams["REQUIRED_FIELDS"])):?><span> *</span><?endif?>
 		</div>
 		<input type="text" name="field2" value="<?=(empty($arResult["ERROR_MESSAGE"]) ? '' : $_POST["field2"])?>">
 	</div>
 <?endif?>
 <?if(in_array("FIELD3", $arParams["USE_FIELDS"])):?>
-	<div class="sk-field3">
-		<div class="sk-text">
-			<?=GetMessage("SK_FIELD3")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("FIELD3", $arParams["REQUIRED_FIELDS"])):?><span class="sk-req">*</span><?endif?>
+	<div class="row">
+		<div>
+			<?=GetMessage("SK_FIELD3")?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("FIELD3", $arParams["REQUIRED_FIELDS"])):?><span> *</span><?endif?>
 		</div>
 		<input type="text" name="field3" value="<?=(empty($arResult["ERROR_MESSAGE"]) ? '' : $_POST["field3"])?>">
 	</div>
 <?endif?>
 <?if($arParams["USE_CAPTCHA"] == "Y"):?>
-	<div class="sk-captcha">
-		<div class="sk-text"><?=GetMessage("SK_CAPTCHA")?></div>
+	<div class="row">
+		<div><?=GetMessage("SK_CAPTCHA")?></div>
 		<input class="captcha_sid" type="hidden" name="captcha_sid" value="<?=$arResult["capCode"]?>">
 		<img class="captcha_img" src="/bitrix/tools/captcha.php?captcha_sid=<?=$arResult["capCode"]?>" width="180" height="40" alt="CAPTCHA">
-		<div class="sk-text"><?=GetMessage("SK_CAPTCHA_CODE")?><span class="sk-req">*</span></div>
+		<div><?=GetMessage("SK_CAPTCHA_CODE")?><span> *</span></div>
 		<input type="text" name="captcha_word" size="30" maxlength="50" value="">
 	</div>
 <?endif;?>
