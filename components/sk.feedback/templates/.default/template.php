@@ -121,10 +121,9 @@ if(strlen($arResult["OK_MESSAGE"]) > 0)
 <?CJSCore::Init(array("jquery"))?>
 <script type="text/javascript">
 $(document).ready(function(){
-	var afjrxm__to,afjrxm__ms;
+	var afjrxm__to;
 	if( !$('.afjrxm__mess').length ) {
 		$('body').append('<div class="afjrxm__mess"><div class="afjrxm__close">&times;</div><div class="afjrxm__title"></div><div class="afjrxm__text"></div></div>');
-		afjrxm__ms = $('.afjrxm__mess');
 		$('.afjrxm__close').click(afClose);
 	}
 
@@ -154,7 +153,7 @@ $(document).ready(function(){
 					$('.afjrxm__text').html(response.msg.join('<br>'));
 				}
 				clearTimeout(afjrxm__to);
-				afjrxm__ms.animate({right: "10px"}, 300);
+				$('.afjrxm__mess').animate({right: "10px"}, 300);
 				afjrxm__to = setTimeout(afClose, 8000)
 			}
 		});
@@ -162,7 +161,7 @@ $(document).ready(function(){
 	
 	function afClose(){
 		clearTimeout(afjrxm__to);
-		afjrxm__ms.animate({right: "-310px"}, 300);
+		$('.afjrxm__mess').animate({right: "-310px"}, 300);
 	}
 });
 </script>
