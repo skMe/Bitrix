@@ -27,30 +27,30 @@ if ($this->StartResultCache())
 			if ($jsn = json_decode($insta, true))
 			{
 				$tsz = $arParams["THUMB_SIZE"];
-				$res["ID"] = $jsn["user"]["id"];
-				$res["PROFILE_PIC_URL"] = $jsn["user"]["profile_pic_url"];
-				$res["PROFILE_PIC_URL_HD"] = $jsn["user"]["profile_pic_url_hd"];
-				$res["USERNAME"] = $jsn["user"]["username"];
-				$res["FULL_NAME"] = $jsn["user"]["full_name"];
-				$res["BIOGRAPHY"] = $jsn["user"]["biography"];
-				$res["EXTERNAL_URL"] = $jsn["user"]["external_url"];
-				$res["FOLLOWED_BY"] = $jsn["user"]["followed_by"]["count"];
-				$res["FOLLOWS"] = $jsn["user"]["follows"]["count"];
-				foreach ($jsn["user"]["media"]["nodes"] as $item)
+				$res["ID"] = $jsn["graphql"]["user"]["id"];
+				$res["PROFILE_PIC_URL"] = $jsn["graphql"]["user"]["profile_pic_url"];
+				$res["PROFILE_PIC_URL_HD"] = $jsn["graphql"]["user"]["profile_pic_url_hd"];
+				$res["USERNAME"] = $jsn["graphql"]["user"]["username"];
+				$res["FULL_NAME"] = $jsn["graphql"]["user"]["full_name"];
+				$res["BIOGRAPHY"] = $jsn["graphql"]["user"]["biography"];
+				$res["EXTERNAL_URL"] = $jsn["graphql"]["user"]["external_url"];
+				$res["FOLLOWED_BY"] = $jsn["graphql"]["user"]["edge_followed_by"]["count"];
+				$res["FOLLOWS"] = $jsn["graphql"]["user"]["edge_follow"]["count"];
+				foreach ($jsn["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"] as $item)
 				{
 					$res["ITEMS"][] = array(
-						"IMG" => array("SRC" => $item["display_src"], "WIDTH" => $item["dimensions"]["width"], "HEIGHT" => $item["dimensions"]["height"]),
+						"IMG" => array("SRC" => $item["node"]["display_url"], "WIDTH" => $item["node"]["dimensions"]["width"], "HEIGHT" => $item["node"]["dimensions"]["height"]),
 						"THUMB" => array(
-							"SRC" => $item["thumbnail_resources"][$tsz]["src"],
-							"WIDTH" => $item["thumbnail_resources"][$tsz]["config_width"],
-							"HEIGHT" => $item["thumbnail_resources"][$tsz]["config_height"],
+							"SRC" => $item["node"]["thumbnail_resources"][$tsz]["src"],
+							"WIDTH" => $item["node"]["thumbnail_resources"][$tsz]["config_width"],
+							"HEIGHT" => $item["node"]["thumbnail_resources"][$tsz]["config_height"],
 						),
-						"INSTA_CODE" => $item["code"],
-						"CAPTION" => $item["caption"],
-						"DATE" => date("j.m.Y", $item["date"]),
-						"TIME" => date("G:i", $item["date"]),
-						"COMMENTS" => $item["comments"]["count"],
-						"LIKES" => $item["likes"]["count"],
+						"INSTA_CODE" => $item["node"]["shortcode"],
+						"CAPTION" => $item["node"]["edge_media_to_caption"]["edges"]["0"]["node"]["text"],
+						"DATE" => date("j.m.Y", $item["node"]["taken_at_timestamp"]),
+						"TIME" => date("G:i", $item["node"]["taken_at_timestamp"]),
+						"COMMENTS" => $item["node"]["edge_media_to_comment"]["count"],
+						"LIKES" => $item["node"]["edge_liked_by"]["count"],
 					);
 				}
 				$arResult = array_merge($arResult, $res);
