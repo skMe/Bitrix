@@ -1,0 +1,16 @@
+.slick-arrow {
+	background: url("data:image/svg+xml;charset=UTF-8,%3csvg width='20' height='110' fill='%23fff' xmlns='http://www.w3.org/2000/svg'%3e%3cfilter id='a'%3e%3cfeGaussianBlur in='SourceAlpha' stdDeviation='1'/%3e%3cfeOffset result='offsetblur'/%3e%3cfeMerge%3e%3cfeMergeNode/%3e%3cfeMergeNode in='SourceGraphic'/%3e%3c/feMerge%3e%3c/filter%3e%3cpath d='M11.5 27.5L2.5 2h6l9 25.5-9 25.5h-6l9-25.5zm-3 55l9 25.5h-6l-9-25.5 9-25.5h6l-9 25.5z' filter='url(%23a)'/%3e%3c/svg%3e") no-repeat;
+	position:absolute;
+	top:50%;
+	margin-top:-27px;
+	width:20px;
+	height:55px;
+	opacity:0.7;
+	cursor:pointer;
+	z-index:10;
+}
+.slick-arrow:hover {opacity:0.9;}
+.lazy_slick-next {right:0;}
+.lazy_slick-prev {left:0;background-position:0 100%}
+.lazy_slick__item {padding:1px;margin:0;}
+.lazy_slick__item img {width:100%;}
