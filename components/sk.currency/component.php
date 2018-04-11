@@ -30,17 +30,25 @@ if ($this->StartResultCache()) {
 			foreach ($items as $item) {
 				$code = $item->getElementsByTagName('CharCode')->item(0)->nodeValue;
 				$curs = $item->getElementsByTagName('Value')->item(0)->nodeValue;
-				$list[$code] = floatval(str_replace(',', '.', $curs));
+				$list[$code] = round(floatval(str_replace(',', '.', $curs)), 4);
 			}
 		}
-		$list["RUB"] = 1.0;
+		$list["RUB"] = 1;
 		foreach ($arParams["CURRENCIES"] as $val) {
 			if ($list[$val]) {
 				$arResult["CURR"][$val] = $list[$val];
 			} else {
-				$arResult["CURR"][$val] = floatval(str_replace(',', '.', $arParams["DEF_".$val]));
+				$arResult["CURR"][$val] = round(floatval(str_replace(',', '.', $arParams["DEF_".$val])), 4);
 			}
-			$arResult["CHANGED"][$val] = $arResult["CHANGE_MODE"] == "P" ? ($arResult["CURR"][$val] / 100 * $arResult["CHANGE_VALUE"] + $arResult["CURR"][$val]) : ($arResult["CURR"][$val] + $arResult["CHANGE_VALUE"]);
+			if ($val == "RUB") {
+				$arResult["CHANGED"]["RUB"] = 1;
+			} else {
+				$chgd = $arResult["CHANGE_MODE"] == "P" ? ($arResult["CURR"][$val] / 100 * $arResult["CHANGE_VALUE"] + $arResult["CURR"][$val]) : ($arResult["CURR"][$val] + $arResult["CHANGE_VALUE"]);
+				$arResult["CHANGED"][$val] = round($chgd, 4);
+			}
+		}
+		foreach ($arParams["CURRENCIES"] as $val) {
+			$arResult["MULTY"][$val] = round(($arResult["CHANGED"][$arResult["BASE_CURR"]] / $arResult["CHANGED"][$val]), 4);
 		}
 	} else {
 		$arResult["ERROR_MESSAGE"][] = GetMessage("SK_CURR_NOT_SEL");
