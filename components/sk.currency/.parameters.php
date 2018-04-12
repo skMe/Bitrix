@@ -28,13 +28,13 @@ $arComponentParameters = array(
 		"DEF_EUR" => Array(
 			"NAME" => GetMessage("SK_DEF_EUR"), 
 			"TYPE" => "STRING",
-			"DEFAULT" => "79.28", 
+			"DEFAULT" => "79.2839", 
 			"PARENT" => "VISUAL",
 		),
 		"DEF_USD" => Array(
 			"NAME" => GetMessage("SK_DEF_USD"), 
 			"TYPE" => "STRING",
-			"DEFAULT" => "64.06", 
+			"DEFAULT" => "64.0626", 
 			"PARENT" => "VISUAL",
 		),
 		"CHANGE_CURR" => Array(
@@ -43,7 +43,7 @@ $arComponentParameters = array(
 			"DEFAULT" => "", 
 			"PARENT" => "VISUAL",
 		),
-		"CACHE_TIME"  =>  array("DEFAULT"=>3600),
+		"CACHE_TIME"  =>  array("DEFAULT"=>86400),
 	)
 );
 
