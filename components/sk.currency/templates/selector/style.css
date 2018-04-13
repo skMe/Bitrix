@@ -1,0 +1,77 @@
+.curr_selector_wrap {
+	position: relative;
+	top: 0;
+}
+
+header.fixed .curr_selector_wrap.maxwidth-theme {
+	display:block;
+}
+
+.curr_selector {
+	position: absolute;
+	right: 10px;
+	top: -162px;
+}
+
+header.fixed .curr_selector {
+	top: -40px;
+}
+
+.curr_selector .curr_btn {
+	background: #237a87;
+	border-color: #237a87;
+}
+
+.curr_selector .curr_btn:hover {
+	background: #00afc0;
+	border-color: #00afc0;
+}
+
+.curr_selector .curr_sign {
+	color: #fff;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 22px;
+	font-weight: 400;
+	line-height: 22px;
+	vertical-align: middle;
+	padding: 0 7px 0 0;
+}
+
+.curr_selector .caret {
+	border-top-color: #fff;
+}
+
+.curr_selector .dropdown-menu {
+	left: auto;
+	right:0;
+	min-width:50px;
+}
+
+.curr_selector_item {
+	margin:0 5px;
+	border-radius: 2px;
+}
+
+.curr_selector_item.selected {
+	background: #237a87;
+	color: #fff;
+}
+
+.curr_selector_item.selected:hover {
+	background: #00afc0;
+	color: #fff;
+}
+
+@media (max-width: 991px) {
+	.curr_selector {
+		top: -144px;
+	}
+}
+
+@media (max-width: 767px) {
+	.curr_selector {
+		right: 50px;
+		top: -49px;
+		z-index: 20;
+	}
+}

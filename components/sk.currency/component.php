@@ -23,9 +23,11 @@ if ($this->StartResultCache()) {
 		$arResult["BASE_CURR"] = $arParams["BASE_CURR"];
 		$xml = new DOMDocument();
 		$url = 'http://www.cbr.ru/scripts/XML_daily.asp';
-		$list = array(); 
+		$list = array();
+		$curr_date = '';
 		if (@$xml->load($url)) {
 			$root = $xml->documentElement;
+			$curr_date = $root->getAttribute('Date');
 			$items = $root->getElementsByTagName('Valute');
 			foreach ($items as $item) {
 				$code = $item->getElementsByTagName('CharCode')->item(0)->nodeValue;
@@ -33,6 +35,7 @@ if ($this->StartResultCache()) {
 				$list[$code] = round(floatval(str_replace(',', '.', $curs)), 4);
 			}
 		}
+		$arResult["CUUR_DATE"] = $curr_date;
 		$list["RUB"] = 1;
 		foreach ($arParams["CURRENCIES"] as $val) {
 			if ($list[$val]) {
