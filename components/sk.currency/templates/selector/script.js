@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+var cc_name = 'CURR_VAL';
+var cc_days = 30;
+
+=======
+>>>>>>> 596cc4560e7b1db3d8bc60a2f81e33ddc5383e46
 $(document).ready(function(){
 
 	var curr_base = getCookie(cc_name)
@@ -12,9 +18,12 @@ $(document).ready(function(){
 	});
 
 });
+<<<<<<< HEAD
+=======
 var cc_name = 'CURR_VAL';
 var cc_days = 30;
 
+>>>>>>> 596cc4560e7b1db3d8bc60a2f81e33ddc5383e46
 function convertPrice(code, multy) {
 	$('.curr_sign').html(curr_data[code].SIGN);
 	$('.curr_btn').attr('title', curr_data[code].NAME);
