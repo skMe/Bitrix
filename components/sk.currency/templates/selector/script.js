@@ -4,7 +4,10 @@ var cc_days = 30;
 $(document).ready(function(){
 
 	var curr_base = getCookie(cc_name)
-	if (!curr_base) setCookie(cc_name, curr_data.BASE, cc_days);
+	if (!curr_base) {
+		setCookie(cc_name, curr_data.BASE, cc_days);
+		curr_base = curr_data.BASE;
+	}
 	if (curr_base != curr_data.BASE) convertPrice(curr_base, curr_data[curr_base].MULTY);
 
 	$('.curr_selector_item').click(function(e){
