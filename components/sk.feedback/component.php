@@ -14,34 +14,27 @@ if(!defined("B_PROLOG_INCLUDED")||B_PROLOG_INCLUDED!==true)die();
 $arTimes = array('0' => GetMessage("SK_TIME0"), '1' => GetMessage("SK_TIME1"), '2' => GetMessage("SK_TIME2"));
 $arResult["PARAMS_HASH"] = md5(serialize($arParams).$this->GetTemplateName());
 
-$arParams["OK_TEXT"] = trim($arParams["OK_TEXT"]);
+$arParams["OK_TEXT"] = trim($arParams["~OK_TEXT"]);
 if($arParams["OK_TEXT"] == '')
 	$arParams["OK_TEXT"] = GetMessage("SK_OK_MESSAGE");
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
 	$arResult["ERROR_MESSAGE"] = array();
 	if(check_bitrix_sessid()) {
-		if((empty($arParams["REQUIRED_FIELDS"]) || in_array("NAME", $arParams["REQUIRED_FIELDS"])) && strlen($_POST["name"]) <= 1)
-			$arResult["ERROR_MESSAGE"][] = GetMessage("SK_REQ_NAME");
-		if((empty($arParams["REQUIRED_FIELDS"]) || in_array("EMAIL", $arParams["REQUIRED_FIELDS"])) && strlen($_POST["email"]) <= 1)
-			$arResult["ERROR_MESSAGE"][] = GetMessage("SK_REQ_EMAIL");
-		if((empty($arParams["REQUIRED_FIELDS"]) || in_array("MESSAGE", $arParams["REQUIRED_FIELDS"])) && strlen($_POST["message"]) <= 3)
-			$arResult["ERROR_MESSAGE"][] = GetMessage("SK_REQ_MESSAGE");
-		if(strlen($_POST["email"]) > 1 && !check_email($_POST["email"]))
-			$arResult["ERROR_MESSAGE"][] = GetMessage("SK_EMAIL_NOT_VALID");
-		if((empty($arParams["REQUIRED_FIELDS"]) || in_array("PHONE", $arParams["REQUIRED_FIELDS"])) && strlen($_POST["phone"]) <= 1)
-			$arResult["ERROR_MESSAGE"][] = GetMessage("SK_REQ_PHONE");
-		if((empty($arParams["REQUIRED_FIELDS"]) || in_array("TIME", $arParams["REQUIRED_FIELDS"])) && strlen($_POST["time"]) <= 1)
-			$arResult["ERROR_MESSAGE"][] = GetMessage("SK_REQ_TIME");
-		if((empty($arParams["REQUIRED_FIELDS"]) || in_array("FILE", $arParams["REQUIRED_FIELDS"])) && empty($_FILES["file"]["tmp_name"]))
-			$arResult["ERROR_MESSAGE"][] = GetMessage("SK_REQ_FILE");
-		if((empty($arParams["REQUIRED_FIELDS"]) || in_array("FIELD1", $arParams["REQUIRED_FIELDS"])) && strlen($_POST["field1"]) <= 1)
-			$arResult["ERROR_MESSAGE"][] = GetMessage("SK_REQ_FIELD1");
-		if((empty($arParams["REQUIRED_FIELDS"]) || in_array("FIELD2", $arParams["REQUIRED_FIELDS"])) && strlen($_POST["field2"]) <= 1)
-			$arResult["ERROR_MESSAGE"][] = GetMessage("SK_REQ_FIELD2");
-		if((empty($arParams["REQUIRED_FIELDS"]) || in_array("FIELD3", $arParams["REQUIRED_FIELDS"])) && strlen($_POST["field3"]) <= 1)
-			$arResult["ERROR_MESSAGE"][] = GetMessage("SK_REQ_FIELD3");
-		if(empty($arParams["EVENT_MESSAGE_ID"])) $arResult["ERROR_MESSAGE"][] = GetMessage("SK_EVENT_EMPTY");
+		if ($arParams["REQUIRED_FIELDS"]) {
+			if(in_array("NAME", $arParams["REQUIRED_FIELDS"]) && strlen($_POST["name"]) <= 1)$arResult["ERROR_MESSAGE"]["name"] = GetMessage("SK_REQ_NAME");
+			if(in_array("EMAIL", $arParams["REQUIRED_FIELDS"]) && strlen($_POST["email"]) <= 1)$arResult["ERROR_MESSAGE"]["email"] = GetMessage("SK_REQ_EMAIL");
+			if(in_array("MESSAGE", $arParams["REQUIRED_FIELDS"]) && strlen($_POST["message"]) <= 3) $arResult["ERROR_MESSAGE"]["message"] = GetMessage("SK_REQ_MESSAGE");
+			if(in_array("PHONE", $arParams["REQUIRED_FIELDS"]) && strlen($_POST["phone"]) <= 1) $arResult["ERROR_MESSAGE"]["phone"] = GetMessage("SK_REQ_PHONE");
+			if(in_array("TIME", $arParams["REQUIRED_FIELDS"]) && strlen($_POST["time"]) <= 1) $arResult["ERROR_MESSAGE"]["time"] = GetMessage("SK_REQ_TIME");
+			if(in_array("FILE", $arParams["REQUIRED_FIELDS"]) && empty($_FILES["file"]["tmp_name"])) $arResult["ERROR_MESSAGE"]["file"] = GetMessage("SK_REQ_FILE");
+			if(in_array("FIELD1", $arParams["REQUIRED_FIELDS"]) && strlen($_POST["field1"]) <= 1) $arResult["ERROR_MESSAGE"]["field1"] = GetMessage("SK_REQ_FIELD1");
+			if(in_array("FIELD2", $arParams["REQUIRED_FIELDS"]) && strlen($_POST["field2"]) <= 1) $arResult["ERROR_MESSAGE"]["field2"] = GetMessage("SK_REQ_FIELD2");
+			if(in_array("FIELD3", $arParams["REQUIRED_FIELDS"]) && strlen($_POST["field3"]) <= 1) $arResult["ERROR_MESSAGE"]["field3"] = GetMessage("SK_REQ_FIELD3");
+		}
+		if(strlen($_POST["email"]) > 1 && !check_email($_POST["email"])) $arResult["ERROR_MESSAGE"]["email"] = GetMessage("SK_EMAIL_NOT_VALID");
+		if(strlen($_POST["phone"]) > 1 && !check_phone($_POST["phone"])) $arResult["ERROR_MESSAGE"]["phone"] = GetMessage("SK_PHONE_NOT_VALID");
+		if(empty($arParams["EVENT_MESSAGE_ID"])) $arResult["ERROR_MESSAGE"]["event"] = GetMessage("SK_EVENT_EMPTY");
 		if($arParams["USE_CAPTCHA"] == "Y") {
 			include_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/classes/general/captcha.php");
 			$captcha_code = $_POST["captcha_sid"];
@@ -49,9 +42,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 			$cpt = new CCaptcha();
 			$captchaPass = COption::GetOptionString("main", "captcha_password", "");
 			if (strlen($captcha_word) > 0 && strlen($captcha_code) > 0) {
-				if (!$cpt->CheckCodeCrypt($captcha_word, $captcha_code, $captchaPass)) $arResult["ERROR_MESSAGE"][] = GetMessage("SK_CAPTCHA_WRONG");
+				if (!$cpt->CheckCodeCrypt($captcha_word, $captcha_code, $captchaPass)) $arResult["ERROR_MESSAGE"]["captcha_word"] = GetMessage("SK_CAPTCHA_WRONG");
 			} else {
-				$arResult["ERROR_MESSAGE"][] = GetMessage("SK_CAPTHCA_EMPTY");
+				$arResult["ERROR_MESSAGE"]["captcha_word"] = GetMessage("SK_CAPTHCA_EMPTY");
 			}
 		}
 		if(empty($arResult["ERROR_MESSAGE"])) {
@@ -101,4 +94,9 @@ if($_POST["ajax"] == "y") {
 	echo json_encode($resp);
 } else {
 	$this->IncludeComponentTemplate();
+}
+
+function check_phone($num) {
+	$num = preg_replace("/\D/", "", $num);
+	return preg_match("/^[78]\d{10}$/", $num);
 }

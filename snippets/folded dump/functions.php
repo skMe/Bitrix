@@ -17,7 +17,7 @@ function tree_toggle(event) {
 <style type="text/css">
 	#fd_dmp {width:100%;padding:10px;font: 400 12px Consolas, 'Lucida Console', 'Courier New', monospace;background: #eee;box-sizing:content-box;word-break:break-all;}
 	#fd_dmp ul {padding: 0;margin: 0;list-style-type:none;}
-	#fd_dmp li {padding-left: 12px;color:#555;position:relative;}
+	#fd_dmp li {padding-left: 12px;color:#555;position:relative;text-align: left;}
 	#fd_dmp li.expanded>span, #fd_dmp li.contracted>span {color:#08c;cursor: pointer;border-bottom:1px dashed #08c;font-weight:700;}
 	#fd_dmp .expanded:before, #fd_dmp .contracted:before {content: '';position:absolute;left:2px;display:block;border:5px solid transparent;}
 	#fd_dmp .expanded:before {border-top-color:#555;top:5px;left:0;}
