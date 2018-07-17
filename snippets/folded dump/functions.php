@@ -1,10 +1,13 @@
 <?
-function dmp($var, $all = false, $die = false)
+$fd_enc = SITE_CHARSET == "windows-1251" ? "cp1251" : "UTF-8";
+
+function dmp($var, $debug = false, $all = false, $die = false)
 {
 	global $USER;
 	if ($USER->isAdmin() || $all)
 	{
 ?>
+
 <script type="text/javascript">
 function tree_toggle(event) {
 	event = event || window.event;
@@ -29,11 +32,13 @@ function tree_toggle(event) {
 <?=formatHtm($var)?>
 </div>
 <?
+		if ($debug) echo "\n<!-- FD_DBG_START \n\n".print_r($var, 1)."\n\n FD_DBG_END -->\n";
 	}
 	if ($die) die;
 }
 
 function formatHtm($var) {
+	global $fd_enc;
 	if (is_array($var) || is_object($var)) {
 		$out = "<ul>\n";
 		foreach ($var as $k => $v) {
@@ -45,6 +50,6 @@ function formatHtm($var) {
 		}
 		return $out."</ul>\n";
 	} else {
-		return htmlspecialchars($var)."\n";
+		return htmlspecialchars($var, ENT_COMPAT, $fd_enc)."\n";
 	}
 }

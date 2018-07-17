@@ -1,0 +1,7 @@
+.orderlist {width: 90%;margin: 10px auto;}
+.orderlist td {padding: 5px;vertical-align: middle;}
+.orderlist_num {text-align: center;}
+.orderlist_quant {min-width: 50px;}
+.orderlist_price {min-width: 80px;}
+.orderlist_summ {min-width: 80px;}
+.orderlist_total_text {text-align: right;}
