@@ -1,11 +1,9 @@
 <?
 $fd_enc = SITE_CHARSET == "windows-1251" ? "cp1251" : "UTF-8";
 
-function dmp($var, $debug = false, $all = false, $die = false)
-{
+function dmp($var, $debug = false, $all = false, $die = false) {
 	global $USER;
-	if ($USER->isAdmin() || $all)
-	{
+	if ($USER->isAdmin() || $all) {
 ?>
 
 <style type="text/css">
@@ -15,7 +13,7 @@ function dmp($var, $debug = false, $all = false, $die = false)
 	#fd_dmp li:before, #fd_dmp li:after {content:none;}
 	#fd_dmp .fd_name {font-weight:700;}
 	#fd_dmp .fd_toggle > .fd_name {color:#08c;cursor: pointer;border-bottom:1px dotted #08c;}
-	#fd_dmp .fd_toggle:before {content: '';position:absolute;left:2px;top:3px;display:block;border:5px solid #eee;border-left-color:#555;}
+	#fd_dmp .fd_toggle:before {content:'';position:absolute;left:2px;top:3px;display:block;border:5px solid #eee;border-left-color:#555;margin:0;width:0;}
 	#fd_dmp .fd_open:before {border-left-color:#eee;border-top-color:#555;top:5px;left:0;}
 	#fd_dmp .fd_toggle ul {display: none;}
 	#fd_dmp .fd_open > ul {display: block;}
@@ -24,15 +22,15 @@ function dmp($var, $debug = false, $all = false, $die = false)
 <div id="fd_dmp">
 <ul>
 <?
-$top = "";
+$cls = $cnt = "";
 $type = strtoupper(gettype($var));
 if (is_array($var) || is_object($var)) {
 	$var = (array) $var;
-	$top .= '<li class="fd_toggle fd_open">[<span class="fd_name">'.$type."</span>] (".count($var)."):";
-} else {
-	$top .= '<li><b>['.$type."]</b>: ";
+	$c = count($var);
+	$cnt = " ($c)";
+	if ($c) $cls = " class=\"fd_toggle fd_open\"";
 }
-echo $top.formatHtm($var);
+echo "<li$cls>[<span class=\"fd_name\">$type</span>] $cnt:".formatHtm($var);
 ?>
 </ul>
 </div>
@@ -55,8 +53,7 @@ function formatHtm($var) {
 		$out = "<ul>\n";
 		foreach ($var as $k => $v) {
 			$type = "<span class=\"fd_type\">".gettype($v)."</span>";
-			$cnt = "";
-			$cls = "";
+			$cnt = $cls = "";
 			if (is_array($v) || is_object($v)) {
 				$v = (array) $v;
 				$c = count($v);
