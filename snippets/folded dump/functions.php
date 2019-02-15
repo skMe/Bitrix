@@ -5,7 +5,7 @@ function dmp($var, $debug = false, $all = false, $die = false) {
 		$r = rand(1000, 9999);
 ?>
 
-<style type="text/css">
+<style>
 	#fd_dmp {width:100%;padding:10px;font:400 12px/14px Consolas, 'Lucida Console', 'Courier New', monospace;background:#eee;box-sizing:border-box;word-break:break-all;}
 	#fd_dmp ul {padding: 0;margin: 0;list-style-type:none;}
 	#fd_dmp li {padding-left:12px;color:#555;position:relative;text-align:left;}
@@ -25,14 +25,18 @@ function dmp($var, $debug = false, $all = false, $die = false) {
 		var_dump($var);
 		$dump = ob_get_clean();
 		$ent_dump = strtr($dump, array("&" => "&amp;", "<" => "&lt;", ">" => "&gt;"));
-		$ent_dump = preg_replace("/^(\S+).*(\([1-9]\d*\))\s\{$/m", "<li class=\"fd_toggle fd_open\">[<span class=\"fd_name\">$1</span>] $2:\n{", $ent_dump);
-		$ent_dump = preg_replace("/^(\S+).*(\(0\))\s\{$/m", "<li>[<span class=\"fd_name\">$1</span>] $2:\n{", $ent_dump);
-		$ent_dump = preg_replace("/^(\S+).*\(\d+\)\s(\".*\")$/m", "<li>[<span class=\"fd_name\">$1</span>]: $2</li>", $ent_dump);
-		$ent_dump = preg_replace("/^(\S+).*\((\d+)\)$/m", "<li>[<span class=\"fd_name\">$1</span>]: $2</li>", $ent_dump);
-		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n(.*?)(\S+).*(\([1-9]\d*\))\s\{$/m", "<li class=\"fd_toggle\">[<span class=\"fd_name\">$1</span>] <span class=\"fd_type\">$3</span> $4:\n$2{", $ent_dump);
-		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n(.*?)(\S+).*(\(0\))\s\{$/m", "<li>[<span class=\"fd_name\">$1</span>] <span class=\"fd_type\">$3</span> $4:\n$2{", $ent_dump);
-		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n.*?(\S+).*\(\d+\)\s(\".*\")$/m", "<li>[<span class=\"fd_name\">$1</span>] <span class=\"fd_type\">$2</span>: $3</li>", $ent_dump);
-		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n.*?(\S+).*\((\d+)\)$/m", "<li>[<span class=\"fd_name\">$1</span>] <span class=\"fd_type\">$2</span>: $3</li>", $ent_dump);
+		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*?\n\s*?(\S+).*\(\d+?\)\s(\"[\s\w\W]*?\")$/m", "<li>[<span class=\"fd_name\">$1</span>] <span class=\"fd_type\">$2</span>: $3</li>", $ent_dump); //string
+		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n\s*?(\S+).*\((\d+?)\)$/m", "<li>[<span class=\"fd_name\">$1</span>] <span class=\"fd_type\">$2</span>: $3</li>", $ent_dump); //int
+		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n\s*?(\S+).*\((\D+?)\)$/m", "<li>[<span class=\"fd_name\">$1</span>] <span class=\"fd_type\">$2</span>: $3</li>", $ent_dump); //bool
+		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n\s*?(\w+?)$/m", "<li>[<span class=\"fd_name\">$1</span>] <span class=\"fd_type\">$2</span>: $2</li>", $ent_dump); //null
+		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n(\s*?)(\S+).*(\([1-9]\d*\))\s\{$/m", "<li class=\"fd_toggle\">[<span class=\"fd_name\">$1</span>] <span class=\"fd_type\">$3</span> $4:\n$2{", $ent_dump); //not empty arr
+		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n(\s*?)(\S+).*(\(0\))\s\{$/m", "<li>[<span class=\"fd_name\">$1</span>] <span class=\"fd_type\">$3</span> $4:\n$2{", $ent_dump); //empty arr
+		$ent_dump = preg_replace("/^(\S+).*\(\d+?\)\s(\"[\s\w\W]*?\")$/m", "<li>[<span class=\"fd_name\">$1</span>]: $2</li>", $ent_dump); //root str
+		$ent_dump = preg_replace("/^(\S+).*\((\d+?)\)$/m", "<li>[<span class=\"fd_name\">$1</span>]: $2</li>", $ent_dump); //root int
+		$ent_dump = preg_replace("/^(\S+).*\((\D+?)\)$/m", "<li>[<span class=\"fd_name\">$1</span>]: $2</li>", $ent_dump); //root bool
+		$ent_dump = preg_replace("/^(\w+?)$/m", "<li>[<span class=\"fd_name\">$1</span>]: $1</li>", $ent_dump); //root null
+		$ent_dump = preg_replace("/^(\S+).*(\([1-9]\d*\))\s\{$/m", "<li class=\"fd_toggle fd_open\">[<span class=\"fd_name\">$1</span>] $2:\n{", $ent_dump);//not empty root arr
+		$ent_dump = preg_replace("/^(\S+).*(\(0\))\s\{$/m", "<li>[<span class=\"fd_name\">$1</span>] $2:\n{", $ent_dump);//empty root arr
 		$ent_dump = preg_replace("/^(\s*)\{/m", "$1<ul>", $ent_dump);
 		$ent_dump = preg_replace("/^(\s*)\}/m", "$1</ul>\n$1</li>", $ent_dump);
 		echo $ent_dump;
@@ -40,7 +44,7 @@ function dmp($var, $debug = false, $all = false, $die = false) {
 </ul>
 </div>
 
-<script type="text/javascript">
+<script>
 	var fdToggles = document.querySelectorAll('.fd_<?=$r?> .fd_toggle > .fd_name');
 	fdToggles.forEach(function(item) {
 		item.addEventListener('click', function(e) {e.stopPropagation(); this.parentNode.classList.toggle('fd_open');});
