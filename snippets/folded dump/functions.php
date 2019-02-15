@@ -1,9 +1,8 @@
 <?
-$fd_enc = SITE_CHARSET == "windows-1251" ? "cp1251" : "UTF-8";
-
 function dmp($var, $debug = false, $all = false, $die = false) {
 	global $USER;
 	if ($USER->isAdmin() || $all) {
+		$r = rand(1000, 9999);
 ?>
 
 <style type="text/css">
@@ -19,53 +18,39 @@ function dmp($var, $debug = false, $all = false, $die = false) {
 	#fd_dmp .fd_open > ul {display: block;}
 	#fd_dmp .fd_type {display:inline-block;color:#fff;background:#5ae;font: 700 10px/10px Arial;padding:1px 2px 2px;border-radius:2px;}
 </style>
-<div id="fd_dmp">
+<div id="fd_dmp" class="fd_<?=$r?>">
 <ul>
 <?
-$cls = $cnt = "";
-$type = strtoupper(gettype($var));
-if (is_array($var) || is_object($var)) {
-	$var = (array) $var;
-	$c = count($var);
-	$cnt = " ($c)";
-	if ($c) $cls = " class=\"fd_toggle fd_open\"";
-}
-echo "<li$cls>[<span class=\"fd_name\">$type</span>] $cnt:".formatHtm($var);
+		ob_start();
+		var_dump($var);
+		$dump = ob_get_clean();
+		$ent_dump = strtr($dump, array("&" => "&amp;", "<" => "&lt;", ">" => "&gt;"));
+		$ent_dump = preg_replace("/^(\S+).*(\([1-9]\d*\))\s\{$/m", "<li class=\"fd_toggle fd_open\">[<span class=\"fd_name\">$1</span>] $2:\n{", $ent_dump);
+		$ent_dump = preg_replace("/^(\S+).*(\(0\))\s\{$/m", "<li>[<span class=\"fd_name\">$1</span>] $2:\n{", $ent_dump);
+		$ent_dump = preg_replace("/^(\S+).*\(\d+\)\s(\".*\")$/m", "<li>[<span class=\"fd_name\">$1</span>]: $2</li>", $ent_dump);
+		$ent_dump = preg_replace("/^(\S+).*\((\d+)\)$/m", "<li>[<span class=\"fd_name\">$1</span>]: $2</li>", $ent_dump);
+		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n(.*?)(\S+).*(\([1-9]\d*\))\s\{$/m", "<li class=\"fd_toggle\">[<span class=\"fd_name\">$1</span>] <span class=\"fd_type\">$3</span> $4:\n$2{", $ent_dump);
+		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n(.*?)(\S+).*(\(0\))\s\{$/m", "<li>[<span class=\"fd_name\">$1</span>] <span class=\"fd_type\">$3</span> $4:\n$2{", $ent_dump);
+		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n.*?(\S+).*\(\d+\)\s(\".*\")$/m", "<li>[<span class=\"fd_name\">$1</span>] <span class=\"fd_type\">$2</span>: $3</li>", $ent_dump);
+		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n.*?(\S+).*\((\d+)\)$/m", "<li>[<span class=\"fd_name\">$1</span>] <span class=\"fd_type\">$2</span>: $3</li>", $ent_dump);
+		$ent_dump = preg_replace("/^(\s*)\{/m", "$1<ul>", $ent_dump);
+		$ent_dump = preg_replace("/^(\s*)\}/m", "$1</ul>\n$1</li>", $ent_dump);
+		echo $ent_dump;
 ?>
 </ul>
 </div>
 
 <script type="text/javascript">
-	var fdToggles = document.querySelectorAll('.fd_toggle > .fd_name');
+	var fdToggles = document.querySelectorAll('.fd_<?=$r?> .fd_toggle > .fd_name');
 	fdToggles.forEach(function(item) {
 		item.addEventListener('click', function(e) {e.stopPropagation(); this.parentNode.classList.toggle('fd_open');});
 	});
 </script>
 
 <?
-		if ($debug) echo "\n<!-- FD_DBG_START \n\n".print_r($var, 1)."\n\n FD_DBG_END -->\n";
+		if ($debug) echo "\n<!-- FD_DBG_START \n\n".$dump."\n\n FD_DBG_END -->\n";
 	}
 	if ($die) die;
-}
-
-function formatHtm($var) {
-	if (is_array($var) || is_object($var)) {
-		$out = "<ul>\n";
-		foreach ($var as $k => $v) {
-			$type = "<span class=\"fd_type\">".gettype($v)."</span>";
-			$cnt = $cls = "";
-			if (is_array($v) || is_object($v)) {
-				$v = (array) $v;
-				$c = count($v);
-				$cnt = " ($c)";
-				if ($c) $cls = " class=\"fd_toggle\"";
-			}
-			$out .= "<li$cls>[<span class=\"fd_name\">$k</span>] $type$cnt:".formatHtm($v);
-		}
-		return $out."</ul>\n";
-	} else {
-		return htmlspecialchars($var, ENT_COMPAT, $fd_enc)."\n";
-	}
 }
 
 ?>
