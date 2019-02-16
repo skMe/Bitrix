@@ -17,7 +17,7 @@ function dmp($var, $debug = false, $all = false, $die = false) {
 	#fd_dmp .fd_open > ul {display: block;}
 	#fd_dmp .fd_row {display: flex;}
 	#fd_dmp .fd_name {white-space: nowrap;}
-	#fd_dmp .fd_type {display:inline-block;color:#fff;background:#5ae;font: 700 10px/10px Arial;padding:1px 2px 2px;border-radius:2px;}
+	#fd_dmp .fd_type {display:inline-block;color:#fff;background:#5ae;font: 700 10px/11px Arial;padding:1px 4px;border-radius:2px;}
 </style>
 <div id="fd_dmp" class="fd_<?=$r?>">
 <ul>
@@ -25,21 +25,21 @@ function dmp($var, $debug = false, $all = false, $die = false) {
 		ob_start();
 		var_dump($var);
 		$dump = ob_get_clean();
-		$ent_dump = strtr($dump, array("&" => "&amp;", "<" => "&lt;", ">" => "&gt;"));
-		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*?\n\s*?(\S+).*\(\d+?\)\s(\"[\s\w\W]*?\")$/m", "<li class=\"fd_row\"><div class=\"fd_name\">[<b class=\"fd_var\">$1</b>] <span class=\"fd_type\">$2</span>:&nbsp;</div><div class=\"fd_value\">$3</div></li>", $ent_dump); //string
-		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n\s*?(\S+).*\((\d+?)\)$/m", "<li class=\"fd_row\"><div class=\"fd_name\">[<b class=\"fd_var\">$1</b>] <span class=\"fd_type\">$2</span>:&nbsp;</div><div class=\"fd_value\">$3</div></li>", $ent_dump); //int
-		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n\s*?(\S+).*\((\D+?)\)$/m", "<li class=\"fd_row\"><div class=\"fd_name\">[<b class=\"fd_var\">$1</b>] <span class=\"fd_type\">$2</span>:&nbsp;</div><div class=\"fd_value\">$3</div></li>", $ent_dump); //bool
-		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n\s*?(\w+?)$/m", "<li class=\"fd_row\"><div class=\"fd_name\">[<b class=\"fd_var\">$1</b>] <span class=\"fd_type\">$2</span>:&nbsp;</div><div class=\"fd_value\">$2</div></li>", $ent_dump); //null
-		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n(\s*?)(\S+).*(\([1-9]\d*\))\s\{$/m", "<li class=\"fd_toggle\"><div class=\"fd_name\">[<b class=\"fd_var\">$1</b>] <span class=\"fd_type\">$3</span> $4:</div>\n$2{", $ent_dump); //not empty arr
-		$ent_dump = preg_replace("/\[\"?(.*?)\"?\].*\n(\s*?)(\S+).*(\(0\))\s\{$/m", "<li><div class=\"fd_name\">[<b class=\"fd_var\">$1</b>] <span class=\"fd_type\">$3</span> $4:</div>\n$2{", $ent_dump); //empty arr
+		$dump = strtr($dump, array("&" => "&amp;", "<" => "&lt;", ">" => "&gt;"));
+		$ent_dump = preg_replace("/^(\s*)\[(\"?.*?\"?)\].*?\n\s*?(\S+).*\(\d+?\)\s(\"[\s\w\W]*?\")$/m", "$1<li class=\"fd_row\"><div class=\"fd_name\">[<b class=\"fd_var\">$2</b>] <span class=\"fd_type\">$3</span>:&nbsp;</div><div class=\"fd_value\">$4</div></li>", $dump); //string
+		$ent_dump = preg_replace("/^(\s*)\[(\"?.*?\"?)\].*\n\s*?(\S+).*\(([\d\.]+?)\)$/m", "$1<li class=\"fd_row\"><div class=\"fd_name\">[<b class=\"fd_var\">$2</b>] <span class=\"fd_type\">$3</span>:&nbsp;</div><div class=\"fd_value\">$4</div></li>", $ent_dump); //int, float
+		$ent_dump = preg_replace("/^(\s*)\[(\"?.*?\"?)\].*\n\s*?(\S+).*\((\D+?)\)$/m", "$1<li class=\"fd_row\"><div class=\"fd_name\">[<b class=\"fd_var\">$2</b>] <span class=\"fd_type\">$3</span>:&nbsp;</div><div class=\"fd_value\">$4</div></li>", $ent_dump); //bool
+		$ent_dump = preg_replace("/^(\s*)\[(\"?.*?\"?)\].*\n\s*?(\*?\w+?\*?)$/m", "$1<li class=\"fd_row\"><div class=\"fd_name\">[<b class=\"fd_var\">$2</b>] <span class=\"fd_type\">$3</span>:&nbsp;</div><div class=\"fd_value\">$3</div></li>", $ent_dump); //null, recursion
+		$ent_dump = preg_replace("/^(\s*)\[(\"?.*?\"?)\].*\n(\s*?)(\S+).*(\([1-9]\d*\))\s\{$/m", "$1<li class=\"fd_toggle\"><div class=\"fd_name\">[<b class=\"fd_var\">$2</b>] <span class=\"fd_type\">$4</span> $5:</div>\n$3{", $ent_dump); //not empty arr
+		$ent_dump = preg_replace("/^(\s*)\[(\"?.*?\"?)\].*\n(\s*?)(\S+).*(\(0\))\s\{$/m", "$1<li><div class=\"fd_name\">[<b class=\"fd_var\">$2</b>] <span class=\"fd_type\">$4</span> $5:</div>\n$3{", $ent_dump); //empty arr
 		$ent_dump = preg_replace("/^(\S+).*\(\d+?\)\s(\"[\s\w\W]*?\")$/m", "<li class=\"fd_row\"><div class=\"fd_name\">[<b class=\"fd_var\">$1</b>]:&nbsp;</div><div class=\"fd_value\">$2</div></li>", $ent_dump); //root str
-		$ent_dump = preg_replace("/^(\S+).*\((\d+?)\)$/m", "<li class=\"fd_row\"><div class=\"fd_name\">[<b class=\"fd_var\">$1</b>]:&nbsp;</div><div class=\"fd_value\">$2</div></li>", $ent_dump); //root int
+		$ent_dump = preg_replace("/^(\S+).*\(([\d\.]+?)\)$/m", "<li class=\"fd_row\"><div class=\"fd_name\">[<b class=\"fd_var\">$1</b>]:&nbsp;</div><div class=\"fd_value\">$2</div></li>", $ent_dump); //root int, float
 		$ent_dump = preg_replace("/^(\S+).*\((\D+?)\)$/m", "<li class=\"fd_row\"><div class=\"fd_name\">[<b class=\"fd_var\">$1</b>]:&nbsp;</div><div class=\"fd_value\">$2</div></li>", $ent_dump); //root bool
-		$ent_dump = preg_replace("/^(\w+?)$/m", "<li class=\"fd_row\"><div class=\"fd_name\">[<b class=\"fd_var\">$1</b>]:&nbsp;</div><div class=\"fd_value\">$1</div></li>", $ent_dump); //root null
+		$ent_dump = preg_replace("/^(\*?\w+?\*?)$/m", "<li class=\"fd_row\"><div class=\"fd_name\">[<b class=\"fd_var\">$1</b>]:&nbsp;</div><div class=\"fd_value\">$1</div></li>", $ent_dump); //root null, recursion
 		$ent_dump = preg_replace("/^(\S+).*(\([1-9]\d*\))\s\{$/m", "<li class=\"fd_toggle fd_open\"><div class=\"fd_name\">[<b class=\"fd_var\">$1</b>] $2:</div>\n{", $ent_dump);//not empty root arr
 		$ent_dump = preg_replace("/^(\S+).*(\(0\))\s\{$/m", "<li><div class=\"fd_name\">[<b class=\"fd_var\">$1</b>] $2:</div>\n{", $ent_dump);//empty root arr
-		$ent_dump = preg_replace("/^(\s*)\{/m", "$1<ul>", $ent_dump);
-		$ent_dump = preg_replace("/^(\s*)\}/m", "$1</ul>\n$1</li>", $ent_dump);
+		$ent_dump = preg_replace("/^(\s*)\{$/m", "$1<ul>", $ent_dump);
+		$ent_dump = preg_replace("/^(\s*)\}$/m", "$1</ul>\n$1</li>", $ent_dump);
 		echo $ent_dump;
 ?>
 </ul>
