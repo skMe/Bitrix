@@ -61,9 +61,11 @@ function dmp($var, $debug = false, $all = false, $die = false) {
 </div>
 <script>
 	var fdToggles = document.querySelectorAll('.fd_<?=$r?> .fd_toggle > .fd_name > .fd_var');
-	fdToggles.forEach(function(item) {
-		item.addEventListener('click', function(e) {e.stopPropagation(); this.parentNode.parentNode.classList.toggle('fd_open');});
-	});
+	if (fdToggles) {
+		for (var i=0;i<fdToggles.length;i++) {
+			fdToggles[i].addEventListener('click', function(e) {e.stopPropagation(); this.parentNode.parentNode.classList.toggle('fd_open');});
+		}
+	}
 </script>
 <?
 		if ($debug) echo "\n<!-- FD_DBG_START (All sequences of two «-» replaced by «-#-»)\n\n".strtr($dump, array("--" => "-#-"))."\n\n FD_DBG_END -->\n";
