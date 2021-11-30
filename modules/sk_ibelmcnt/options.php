@@ -1,35 +1,28 @@
 <?php
-use Bitrix\Main\Localization\Loc;
-use Bitrix\Main\HttpApplication;
-use Bitrix\Main\Loader;
-use Bitrix\Main\Config\Option;
-use Bitrix\Iblock\IblockTable;
+IncludeModuleLangFile(__FILE__);
 
-Loc::loadMessages(__FILE__);
-
-$request = HttpApplication::getInstance()->getContext()->getRequest();
-$module_id = htmlspecialchars($request['mid'] != '' ? $request['mid'] : $request['id']);
-Loader::includeModule($module_id);
+$module_id = htmlspecialchars($_REQUEST['mid'] != '' ? $_REQUEST['mid'] : $_REQUEST['id']);
+CModule::IncludeModule($module_id);
 
 $arIBlocks=Array("0" => " ≡ НЕ ВЫБРАНО ≡ ");
-$db_iblock = IblockTable::GetList(Array('order' => array("IBLOCK_TYPE_ID" => "ASC")));
-while($iblock = $db_iblock->fetch())
+$db_iblock = CIBlock::GetList(Array("iblock_type" => "asc"));
+while($iblock = $db_iblock->Fetch())
 	$arIBlocks[$iblock["ID"]] = $iblock["NAME"]." (".$iblock["ID"].")";
 
 
 $aTabs = array(
     array(
         'DIV'     => 'edit1',
-        'TAB'     => Loc::getMessage('IBELMCNTD7_OPTIONS_TAB_GENERAL'),
-        'TITLE'   => Loc::getMessage('IBELMCNTD7_OPTIONS_TAB_TITLE'),
+        'TAB'     => GetMessage('IBELMCNT_OPTIONS_TAB_GENERAL'),
+        'TITLE'   => GetMessage('IBELMCNT_OPTIONS_TAB_TITLE'),
         'OPTIONS' => array(
             array(
                 'iblock_id',
-                Loc::getMessage('IBELMCNTD7_OPTIONS_IB_SELECT'),
+                GetMessage('IBELMCNT_OPTIONS_IB_SELECT'),
                 '0',
                 array('selectbox', $arIBlocks)
             ),
-						array('note' => Loc::getMessage('IBELMCNTD7_OPTIONS_NOTE', array("#MODULE_ID#" => $module_id))),
+						array('note' => GetMessage('IBELMCNT_OPTIONS_NOTE', array("#MODULE_ID#" => $module_id))),
         )
     ),
 );
@@ -53,21 +46,21 @@ $tabControl->begin();
     $tabControl->buttons();
     ?>
     <input type="submit" name="apply" 
-           value="<?= Loc::GetMessage('IBELMCNTD7_OPTIONS_INPUT_APPLY'); ?>" class="adm-btn-save" />
+           value="<?= GetMessage('IBELMCNT_OPTIONS_INPUT_APPLY'); ?>" class="adm-btn-save" />
 </form>
 
 <?php
 $tabControl->end();
 
-if ($request->isPost() && check_bitrix_sessid()) {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && check_bitrix_sessid()) {
 
     foreach ($aTabs as $aTab) {
         foreach ($aTab['OPTIONS'] as $arOption) {
             if (!is_array($arOption)) continue;
             if ($arOption['note']) continue;
-            if ($request['apply']) {
-                $optionValue = $request->getPost($arOption[0]);
-                Option::set($module_id, $arOption[0], is_array($optionValue) ? implode(',', $optionValue) : $optionValue);
+            if ($_REQUEST['apply']) {
+                $optionValue = $_REQUEST[$arOption[0]];
+                COption::SetOptionString($module_id, $arOption[0], is_array($optionValue) ? implode(',', $optionValue) : $optionValue);
             }
         }
     }

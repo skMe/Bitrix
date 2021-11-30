@@ -15,11 +15,11 @@ class sk_ibelmcntd7 extends CModule {
             $this->MODULE_ID           = get_class($this);
             $this->MODULE_VERSION      = $arModuleVersion['VERSION'];
             $this->MODULE_VERSION_DATE = $arModuleVersion['VERSION_DATE'];
-            $this->MODULE_NAME         = Loc::getMessage('IBELMCNT_NAME');
-            $this->MODULE_DESCRIPTION  = Loc::getMessage('IBELMCNT_DESCRIPTION');
+            $this->MODULE_NAME         = Loc::getMessage('IBELMCNTD7_NAME');
+            $this->MODULE_DESCRIPTION  = Loc::getMessage('IBELMCNTD7_DESCRIPTION');
         } else {
             CAdminMessage::ShowMessage(
-                Loc::getMessage('IBELMCNT_FILE_NOT_FOUND').' version.php'
+                Loc::getMessage('IBELMCNTD7_FILE_NOT_FOUND').' version.php'
             );
         }
     }
@@ -33,13 +33,13 @@ class sk_ibelmcntd7 extends CModule {
             ModuleManager::registerModule($this->MODULE_ID);
         } else {
             CAdminMessage::ShowMessage(
-                Loc::getMessage('IBELMCNT_INSTALL_ERROR')
+                Loc::getMessage('IBELMCNTD7_INSTALL_ERROR')
             );
             return;
         }
 
         $APPLICATION->IncludeAdminFile(
-            Loc::getMessage('IBELMCNT_INSTALL_TITLE').' «'.Loc::getMessage('IBELMCNT_NAME').'»',
+            Loc::getMessage('IBELMCNTD7_INSTALL_TITLE').' «'.Loc::getMessage('IBELMCNTD7_NAME').'»',
             __DIR__.'/step.php'
         );
     }
@@ -68,7 +68,7 @@ class sk_ibelmcntd7 extends CModule {
         ModuleManager::unRegisterModule($this->MODULE_ID);
 
         $APPLICATION->IncludeAdminFile(
-            Loc::getMessage('IBELMCNT_UNINSTALL_TITLE').' «'.Loc::getMessage('IBELMCNT_NAME').'»',
+            Loc::getMessage('IBELMCNTD7_UNINSTALL_TITLE').' «'.Loc::getMessage('IBELMCNTD7_NAME').'»',
             __DIR__.'/unstep.php'
         );
 
