@@ -24,7 +24,8 @@ function dmp($var, $debug = false, $all = false, $die = false) {
 		ob_start();
 		var_dump($var);
 		$dump = ob_get_clean();
-		$ent_dump = strtr($dump, array("&" => "&amp;", "<" => "&lt;", ">" => "&gt;"));
+		$ent_dump = preg_replace_callback("/(^\s*string.*\(\d+?\)\s\")([\s\w\W]*?)(\"\r?\n)/m", function($m){return $m[1].strtr($m[2], 
+			array("&" => "&amp;", "<" => "&lt;", ">" => "&gt;", "'" => "&#39;", "\"" => "&#34;", "(" => "&#40;", ")" => "&#41;", "{" => "&#123;", "}" => "&#125;")).$m[3];}, $dump);
 		$patterns = array(
 			"/^(\s*)\[(\"?.*?\"?)\].*?\n\s*?(\S+).*\(\d+?\)\s(\"[\s\w\W]*?\")$/m", //string
 			"/^(\s*)\[(\"?.*?\"?)\].*\n\s*?(\S+).*\(([\d\.]+?)\)$/m", //int, float
@@ -68,7 +69,7 @@ function dmp($var, $debug = false, $all = false, $die = false) {
 	}
 </script>
 <?
-		if ($debug) echo "\n<!-- FD_DBG_START (All sequences of two «-» replaced by «-#-»)\n\n".strtr($dump, array("--" => "-#-"))."\n\n FD_DBG_END -->\n";
+		if ($debug) echo "\n<!-- FD_DBG_START (All sequences of two «-» replaced by «-#-»)\n\n".strtr($ent_dump, array("--" => "-#-"))."\n\n FD_DBG_END -->\n";
 	}
 	if ($die) die;
 }
