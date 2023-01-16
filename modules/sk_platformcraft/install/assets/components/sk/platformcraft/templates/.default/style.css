@@ -1,0 +1,39 @@
+.pc__wrap {
+	max-width:1200px;
+	margin: 20px auto;
+}
+.pc_error {
+	color:#f48;
+}
+.day_item {
+  margin: 20px;
+  border: solid 1px #789;
+  padding: 20px;
+  border-radius: 4px;
+}
+.day_title {
+  font-size: 1.3em;
+  padding: 0 0 1em;
+}
+.today .day_title {
+  font-size: 1.7em;
+}
+.finish {
+  color: #888;
+}
+.before, .before .finish {
+  color: #aaa;
+}
+.start {
+  font-size: 1.2em;
+	font-weight: 600;
+}
+.start:after {
+  content: "← Идет сейчас";
+	padding:3px 10px;
+	font-size: 0.9em;
+  background: #789;
+  color: #fff;
+	margin: 0 0 0 10px;
+	font-weight: 400;
+}
